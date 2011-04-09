@@ -103,18 +103,18 @@ function get_char_coordinates(char_index){
  */
 function render_range(range){
     
-    // Create div for the range.
-    var range_div = $('<div></div>');
+    // Create container div for the range.
+    var container_div = $('<div></div>');
 
     // Add clearfix and annotation container classes.
     // @TODO: add label classes too.
-    $(range_div).addClass("clearfix annotation-container");
+    $(container_div).addClass("clearfix annotation-container");
 
     // Create inner div for the range.
     inner_div = $('<div></div>');
     
     // Append the inner div to the range div.
-    $(range_div).append(inner_div);
+    $(container_div).append(inner_div);
 
     // Add the annotation-inner class the inner div.
     $(inner_div).addClass("annotation-inner");
@@ -124,16 +124,17 @@ function render_range(range){
 
     // Set left position and width of inner_div.
     // We use ems to align with our gridded text.
-    $(range_div).css('left', range.start.toString() + "em");
-    $(range_div).css('width', range_width.toString() + "em");
+    $(inner_div).css('left', range.start.toString() + "em");
+    $(inner_div).css('width', range_width.toString() + "em");
     
     // Set the range's underline color and thickness.
     // @ TODO: set width based on score.
-    $(range_div).css('height', range.thickness + "ex");
-    $(range_div).css('border-top', range.thickness + "ex solid " + range.color );
+    $(container_div).css('height', range.thickness + "ex");
+    $(inner_div).css('height', range.thickness + "ex");
+    $(inner_div).css('border-bottom', range.thickness + "ex solid " + range.color );
 
     // Append the range_div to its corresponding line.
-    $('.line' + range.line.toString()).append(range_div);
+    $('.line' + range.line.toString()).append(container_div);
 
 
     //$('.line1').append('<div class="clearfix" style="margin-bottom:2px; float:left;width: 100%; height:4px; position:relative;"><div style="position: absolute; left: 12em; width: 7em; height:4px; border-top:thick dotted green;"></div></div>');

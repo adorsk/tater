@@ -1,0 +1,12 @@
+/* annotation container div */
+.annotation-container{
+    margin-bottom: 2px;
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+/* annotation inner div */
+.annotation-inner{
+    position: absolute;
+}
