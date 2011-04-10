@@ -1,9 +1,11 @@
-/* annotation container div */
-.annotation-container{
-    margin-bottom: 2px;
-    float: left;
-    width: 100%;
+/* markup container div */
+.markup{
     position: relative;
+}
+
+.annotation-wrapper{
+    margin-bottom: 1px;
+    position: absolute;
 }
 
 /* annotation inner div */
