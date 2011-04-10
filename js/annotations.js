@@ -134,9 +134,35 @@ function render_range(range){
     $(inner_div).css('border-bottom', range.thickness + "ex solid " + range.color );
 
     // Append the range_div to its corresponding line.
-    $('.line' + range.line.toString()).append(container_div);
-
+    //$('.line' + range.line.toString()).append(container_div);
+    var line = get_line_for_range(range);
+    $(line).append(container_div);
 
     //$('.line1').append('<div class="clearfix" style="margin-bottom:2px; float:left;width: 100%; height:4px; position:relative;"><div style="position: absolute; left: 12em; width: 7em; height:4px; border-top:thick dotted green;"></div></div>');
 
+}
+
+/**
+ * get_next_y
+ * A function to get the highest valid y position for a range element.
+ * Also updates the height of the line which contains the range, if needed.
+ * @TODO: needs a bette name.
+ */
+function get_next_y(range){
+    // Get all range elements in the range's containing line.
+    var line = get_line_for_range(range);
+    line_ranges = $(line).children()
+
+    //which are w/in the range's
+    // horizontal space.
+    
+    
+}
+
+/**
+ * get_line_for_range
+ * get the line which contains a range.
+ */
+function get_line_for_range(range){
+    return $('.line' + range.line.toString());
 }
