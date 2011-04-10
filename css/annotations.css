@@ -6,9 +6,9 @@
 .annotation-wrapper{
     margin-bottom: 1px;
     position: absolute;
+    min-height: 1px;
 }
 
 /* annotation inner div */
 .annotation-inner{
-    position: absolute;
 }

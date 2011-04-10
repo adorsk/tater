@@ -118,7 +118,11 @@ function render_range(range){
     $(wrapper_div).addClass("annotation-wrapper");
 
     // Create inner div.
+    // @TODO: populate inner div w/ anotation content.
     var inner_div = $('<div></div>');
+
+    // Append the inner div to the wrapper div.
+    $(wrapper_div).append(inner_div);
 
     // Add the annotation-inner class the inner div.
     // @TODO: add label classes too.
@@ -134,26 +138,16 @@ function render_range(range){
     
     // Set the range's underline color and thickness.
     // @ TODO: set width based on score.
-    $(wrapper_div).css('height', range.thickness + "ex");
-    $(wrapper_div).css('height', range.thickness + "ex");
     $(wrapper_div).css('border-bottom', range.thickness + "ex solid " + range.color );
-
-    // Create inner div for the range.
-    // @TODO: populate inner div w/ anotation content.
-    inner_div = $('<div></div>');
     
-    // Append the inner div to the wrapper div.
-    $(wrapper_div).append(inner_div);
-
     // Set top position of wrapper div.
     // Get top position by looking for top-most y that does not conflict with other markup items.
-    console.log("wrapper div: %o", wrapper_div);
     wrapper_top = get_next_markup_item_top(markup_div, wrapper_div);
     $(wrapper_div).css('top', wrapper_top + "px");
 
     // Update the markup div's height if wrapper's bottom will overflow markup div's bottom.
     markup_div_height = $(markup_div).height();
-    wrapper_height = $(wrapper_div).height();
+    wrapper_height = $(wrapper_div).outerHeight();
     wrapper_bottom = wrapper_top + wrapper_height;
     if (wrapper_bottom > markup_div_height){
 	$(markup_div).css('height', wrapper_bottom + 'px');
@@ -171,24 +165,28 @@ function render_range(range){
  * @TODO: Should probably be a method for
  * something like a markup container class.
  */
-function get_next_markup_item_top(markup_div, range_div){
+function get_next_markup_item_top(markup_div, wrapper_div){
 
     // Get left and right coordinates of the range div.
-    range_pos = $(range_div).position();
-    range_width = $(range_div).width();
-    range_left = range_pos.left;
-    range_right = range_pos.left + range_width;
-    console.log("range_pos: %o", range_pos);
+    wrapper_pos = $(wrapper_div).position();
+    wrapper_width = $(wrapper_div).width();
+    wrapper_left = wrapper_pos.left;
+    wrapper_right = wrapper_pos.left + wrapper_width;
 
     // Filter the elements into those elements which are in the
-    // range's horizontal column.
+    // wrapper's horizontal column.
     
     // Get the children in the markup div.   
     markup_elements = $(markup_div).children();
 
-    // Get children which are w/in the range's
+    // Get children which are w/in the wrapper's
     // horizontal space.
     conflicting_children = markup_elements.filter(function(index){
+
+	// Return 0 if child is the wrapper div.
+	if (this == wrapper_div.get(0)){
+	    return 0;
+	}
 
 	// Get left and right positions of the current child.
 	pos = $(this).position();
@@ -197,13 +195,9 @@ function get_next_markup_item_top(markup_div, range_div){
 	child_left = pos.left;
 	child_right = pos.left + width;
 	
-	console.log("child: %o", this);
-	console.log("cl: %s, cr: %s, rl: %s, rr: %s", child_left, child_right, range_left, range_right);
-
-	if ( ( (child_left >= range_left) && (child_left <= range_right) ) // check left
-	     || ( (child_right >= range_left) && (child_right <= range_right) ) // check right
+	if ( ( (child_left >= wrapper_left) && (child_left <= wrapper_right) ) // check left
+	     || ( (child_right >= wrapper_left) && (child_right <= wrapper_right) ) // check right
 	   ){
-	    console.log("conflict");
 	    return 1;
 	}
 	else{
@@ -218,7 +212,7 @@ function get_next_markup_item_top(markup_div, range_div){
 	var bottom = 0;
 	conflicting_children.each(function(index, child){
 	    child_pos = $(child).position();
-	    child_height = $(child).height();
+	    child_height = $(child).outerHeight();
 	    child_bottom = child_pos.top + child_height;
 
 	    // update bottom if current child's bottom is greater.
